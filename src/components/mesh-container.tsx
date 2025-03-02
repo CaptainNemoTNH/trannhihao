@@ -1,6 +1,6 @@
 "use client";
 
-import { CameraControls, OrbitControls } from "@react-three/drei";
+import {  OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
 interface MeshContainerProps {
