@@ -6,11 +6,13 @@ import {
   MeshReflectorMaterial,
   Text,
   useFont,
+  useScroll,
 } from "@react-three/drei";
 import Pacman3D from "@/components/3Ds/Pacman3D";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { useEffect, useRef } from "react";
 import { Color } from "three";
+import { useFrame } from "@react-three/fiber";
 
 const bloomColor = new Color("#fff");
 bloomColor.multiplyScalar(1);
@@ -18,6 +20,7 @@ bloomColor.multiplyScalar(1);
 const WelcomeScence = () => {
   const controls = useRef();
   const meshFitCameraHome = useRef();
+  const scroll = useScroll();
 
   const intro = async () => {
     controls.current.dolly(-30);
@@ -28,6 +31,33 @@ const WelcomeScence = () => {
   const fitCamera = async () => {
     controls.current.fitToBox(meshFitCameraHome.current, true);
   };
+
+  useFrame(() => {
+    if (scroll) {
+      const scrollOffset = scroll.offset || 0;
+      const xPos = 0;
+      const yPos = 0.5;
+      const zPos = 16.3 - scrollOffset * 100;
+
+      console.log(zPos);
+
+      controls.current.setLookAt(
+        xPos,
+        yPos,
+        zPos,
+        zPos < 10 ? 4 : 0, //x
+        0.5, //y
+        zPos < 10 ? 1 : 0, //z
+        true
+      );
+    }
+  });
+
+  useEffect(() => {
+    if (controls.current) {
+      controls.current.mouseButtons.wheel = 0;
+    }
+  }, []);
 
   useEffect(() => {
     intro();

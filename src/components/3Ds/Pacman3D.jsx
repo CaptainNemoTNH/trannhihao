@@ -10,7 +10,7 @@ export default function Pacman3D(props) {
 
   useEffect(() => {
     if (actions) {
-      actions["Take 001"].setDuration(10).play();
+      actions["Take 001"].reset().fadeIn(0.5).setDuration(5).play();
     }
   }, []);
 
@@ -825,7 +825,7 @@ export default function Pacman3D(props) {
                     />
                   </group>
                 </group>
-                <group name="finalBWaka">
+                <group name="finalBWaka" rotation={[0, Math.PI, 0]}>
                   <group
                     name="finalWakawaka1"
                     position={[-0.023, 8.364, 0.282]}
