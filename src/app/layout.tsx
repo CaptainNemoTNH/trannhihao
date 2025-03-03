@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-galaxy bg-cover bg-center bg-fixed">
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

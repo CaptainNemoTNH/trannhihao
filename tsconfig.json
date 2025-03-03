@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/components/meshes/Earth.Mesh.jsx"  ],
+, "src/components/meshes/Earth.Mesh.jsx", "src/components/scences/WelcomeScence.jsx"  ],
   "exclude": [
     "node_modules"
   ]

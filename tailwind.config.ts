@@ -56,17 +56,8 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      keyframes: {
-        slideRightLeft: {
-          "0%, 100%": { transform: "translateX(50%) translateY(25%)" },
-          "50%": { transform: "translateX(53%) translateY(22%)" },
-        },
-      },
-      animation: {
-        slide: "slideRightLeft 3s ease-in-out infinite",
-      },
       backgroundImage: {
-        'galaxy': "url('/background/galaxy_bg.jpg')",
+        galaxy: "url('/background/galaxy_bg.jpg')",
       },
     },
   },
