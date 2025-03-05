@@ -11,10 +11,10 @@ export default function HomePage() {
     <div className="w-full h-[100vh]">
       <Canvas shadows camera={{ position: [0, 0.5, 8], fov: 42 }}>
         <color attach="background" args={["#171720"]} />
-        <fog attach="fog" args={["#171720", 15, 30]} />
+        <fog attach="fog" args={["#171720", 5, 30]} />
         <Suspense>
-          <ScrollControls pages={2} damping={0.1}>
-            <WelcomeScence />
+          <ScrollControls pages={3} damping={0.1}>
+            <WelcomeScence pages={3} />
           </ScrollControls>
         </Suspense>
         <EffectComposer>
