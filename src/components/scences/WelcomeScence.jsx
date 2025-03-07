@@ -3,13 +3,15 @@
 import {
   CameraControls,
   Environment,
+  Float,
   Text,
   useFont,
   useScroll,
 } from "@react-three/drei";
 import Pacman3D from "@/components/3Ds/Pacman3D";
-import LightMushrooms3D from "@/components/3Ds/LightMushrooms3D";
 import Telescope3D from "@/components/3Ds/Telescope3D";
+import Lighthouse3D from "@/components/3Ds/Lighthouse3D";
+import Plane3D from "@/components/3Ds/Plane3D";
 import { degToRad, lerp } from "three/src/math/MathUtils.js";
 import { useEffect, useRef } from "react";
 import { Color } from "three";
@@ -23,11 +25,16 @@ const WelcomeScence = (props) => {
   const meshFitCameraHome = useRef();
   const meshFitCameraPacman3D = useRef();
   const meshFitCameraTelescope3D = useRef();
+  const meshFitCameraLighthouse3D = useRef();
+  const meshFitCameraPlane3D = useRef();
+
   const scroll = useScroll();
+
   const welcomeTextRef = useRef();
   const introTextRef = useRef();
   const skillsTextRef = useRef();
   const telescopeRef = useRef();
+  const coverTextRef = useRef();
 
   const intro = async () => {
     controls.current.dolly(-30);
@@ -53,13 +60,41 @@ const WelcomeScence = (props) => {
     );
   };
 
-  const fitCameraLightMushroom3D = async () => {
+  const fitCameraTelescope3D = async () => {
     controls.current.fitToBox(meshFitCameraTelescope3D.current, true);
     const meshPosition = meshFitCameraTelescope3D.current.position;
     controls.current.setLookAt(
       17,
-      0.5,
-      11,
+      1,
+      13,
+      meshPosition.x,
+      meshPosition.y,
+      meshPosition.z,
+      true
+    );
+  };
+
+  const fitCameraLighthouse3D = async () => {
+    controls.current.fitToBox(meshFitCameraLighthouse3D.current, true);
+    const meshPosition = meshFitCameraLighthouse3D.current.position;
+    controls.current.setLookAt(
+      17,
+      2,
+      -13,
+      meshPosition.x,
+      meshPosition.y,
+      meshPosition.z,
+      true
+    );
+  };
+
+  const fitCameraPlane3D = async () => {
+    controls.current.fitToBox(meshFitCameraPlane3D.current, true);
+    const meshPosition = meshFitCameraPlane3D.current.position;
+    controls.current.setLookAt(
+      17,
+      35,
+      -14,
       meshPosition.x,
       meshPosition.y,
       meshPosition.z,
@@ -105,12 +140,24 @@ const WelcomeScence = (props) => {
         }
       });
 
+      coverTextRef.current.opacity = lerp(
+        coverTextRef.current.opacity,
+        scrollOffset >= 3 / props.pages
+          ? (scrollOffset - 3 / props.pages) * props.pages
+          : 0,
+        delta * 10
+      );
+
       if (scrollOffset < 1 / props.pages) {
         fitCameraHome();
       } else if (scrollOffset < 2 / props.pages) {
         fitCameraPacman3D();
-      } else if (scrollOffset < 1) {
-        fitCameraLightMushroom3D();
+      } else if (scrollOffset < 3 / props.pages) {
+        fitCameraTelescope3D();
+      } else if (scrollOffset < 4 / props.pages) {
+        fitCameraLighthouse3D();
+      } else if (scrollOffset <= 1) {
+        fitCameraPlane3D();
       }
     }
   });
@@ -153,13 +200,25 @@ const WelcomeScence = (props) => {
         position={[17, 1, 1.5]}
         visible={false}
       >
-        <boxGeometry args={[11, 5, 5]} />
+        <boxGeometry args={[13, 5, 5]} />
+        <meshBasicMaterial color="orange" transparent opacity={0.5} />
+      </mesh>
+      <mesh
+        ref={meshFitCameraLighthouse3D}
+        position={[17, 2, -30]}
+        visible={false}
+      >
+        <boxGeometry args={[15, 9, 5]} />
+        <meshBasicMaterial color="orange" transparent opacity={0.5} />
+      </mesh>
+      <mesh ref={meshFitCameraPlane3D} position={[17, 35, -30]} visible={false}>
+        <boxGeometry args={[15, 9, 5]} />
         <meshBasicMaterial color="orange" transparent opacity={0.5} />
       </mesh>
       <Text
         font={"/fonts/Poppins-Black.ttf"}
         position-x={-3}
-        position-y={-0.5}
+        position-y={0.5}
         position-z={1}
         lineHeight={1}
         textAlign="left"
@@ -184,8 +243,8 @@ const WelcomeScence = (props) => {
 
         <Text
           font={"/fonts/Poppins-Black.ttf"}
-          position-x={5.5}
-          position-y={1}
+          position-x={6}
+          position-y={0.5}
           position-z={3}
           lineHeight={1.5}
           textAlign="left"
@@ -194,7 +253,9 @@ const WelcomeScence = (props) => {
           scale={0.3}
         >
           MY NAME IS TRAN NHI HAO,{"\n"}aka HENRY!{"\n"}
+          {"\n"}
           GRADUATED FROM FPT UNIVERSITY,{"\n"}
+          {"\n"}
           I'M EXCITED TO BE ON THE PATH OF{"\n"}WEB DEVELOPMENT AND WILL DO MY
           BEST{"\n"}TO EXCEL IN THIS ROLE.
           <meshBasicMaterial
@@ -217,14 +278,13 @@ const WelcomeScence = (props) => {
         >
           MY CAREER GOALS:{"\n\n"}
           SHORT-TERM:{"\n"}
+          {"\n"}- IMPROVING MY SKILLS AS FRONT-END DEVELOPER{"\n"}- LEARNING AND
+          ADAPTING TO VARIOUS BACK-END TECHNOLOGIES{"\n"}AS WELL AS DEV-OPS TO
+          BECOME A FULLSTACK DEVELOPER{"\n"}
           {"\n"}
-          - IMPROVING MY SKILLS AS FRONT-END DEVELOPER{"\n"}
-          - LEARNING AND ADAPTING TO VARIOUS BACK-END TECHNOLOGIES{"\n"}AS WELL AS
-          DEV-OPS TO BECOME A FULLSTACK DEVELOPER{"\n"}{"\n"}
           LONG-TERM:{"\n"}
-          {"\n"}
-          - IMPROVING MY SKILLS AS A FULL-STACK DEVELOPER{"\n"}
-          - KEEP UPDATING MY SKILLS TO BE MORE EFFICIENCY PROGRAMMER{"\n"}
+          {"\n"}- IMPROVING MY SKILLS AS A FULL-STACK DEVELOPER{"\n"}- KEEP
+          UPDATING MY SKILLS TO BE MORE EFFICIENCY PROGRAMMER{"\n"}
           <meshBasicMaterial
             color={bloomColor}
             toneMapped={false}
@@ -237,6 +297,60 @@ const WelcomeScence = (props) => {
           position-y={0.5}
           position-x={1}
         />
+      </group>
+      <group position-x={24} position-y={1.5} position-z={-30}>
+        <Text
+          font={"/fonts/Poppins-Black.ttf"}
+          position-x={-11}
+          position-y={-3}
+          position-z={0}
+          lineHeight={2}
+          textAlign="left"
+          anchorY={"bottom"}
+          scale={0.3}
+        >
+          With a passion for bringing designs to life on real-world websites,
+          {"\n"}I would like to apply for the Frontend Developer position{"\n"}
+          to have the opportunity to work and grow with your company{"\n"}
+          {"\n"}- I have experience working with ReactJS and NextJS{"\n"}-
+          Fundamental knowledge of UI/UX and SEO{"\n"}- Good at teamwork and
+          always open to feedback{"\n"}
+          {"\n"}
+          As an outgoing and dynamic developer,{"\n"}I believe technology
+          enables us to connect with industries worldwide{"\n"}
+          {"\n"}
+          Your company is an environment where I hope to learn, grow, and
+          contribute.{"\n"}I look forward to applying my skills to support the
+          company's development
+          <meshBasicMaterial
+            color={bloomColor}
+            toneMapped={false}
+            ref={coverTextRef}
+          />
+        </Text>
+
+        <Lighthouse3D scale={20} />
+      </group>
+      <group position-x={8} position-y={33} position-z={-30}>
+        <Float>
+          <Text
+            font={"/fonts/Poppins-Black.ttf"}
+            position-x={13}
+            position-y={2}
+            position-z={0}
+            lineHeight={2}
+            textAlign="center"
+            anchorY={"bottom"}
+            scale={0.6}
+          >
+            I HOPE TO HEAR FROM YOU SOON.{"\n"}THANK YOU, AND I WISH YOU A GREAT
+            DAY!
+            <meshBasicMaterial color={bloomColor} toneMapped={false} />
+          </Text>
+        </Float>
+        <Float speed={5} floatingRange={[-1, 1]}>
+          <Plane3D scale={4} />
+        </Float>
       </group>
       <Environment preset="sunset" />
     </>
