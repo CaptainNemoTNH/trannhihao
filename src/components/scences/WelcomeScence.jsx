@@ -8,10 +8,10 @@ import {
   useScroll,
 } from "@react-three/drei";
 import Pacman3D from "@/components/3Ds/Pacman3D";
-import Nature3D from "@/components/3Ds/Nature3D";
 import LightMushrooms3D from "@/components/3Ds/LightMushrooms3D";
+import Telescope3D from "@/components/3Ds/Telescope3D";
 import { degToRad, lerp } from "three/src/math/MathUtils.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Color } from "three";
 import { useFrame } from "@react-three/fiber";
 
@@ -22,12 +22,12 @@ const WelcomeScence = (props) => {
   const controls = useRef();
   const meshFitCameraHome = useRef();
   const meshFitCameraPacman3D = useRef();
-  const meshFitCameraLightMushroom3D = useRef();
+  const meshFitCameraTelescope3D = useRef();
   const scroll = useScroll();
   const welcomeTextRef = useRef();
   const introTextRef = useRef();
   const skillsTextRef = useRef();
-  const mushroomRef = useRef();
+  const telescopeRef = useRef();
 
   const intro = async () => {
     controls.current.dolly(-30);
@@ -54,8 +54,8 @@ const WelcomeScence = (props) => {
   };
 
   const fitCameraLightMushroom3D = async () => {
-    controls.current.fitToBox(meshFitCameraLightMushroom3D.current, true);
-    const meshPosition = meshFitCameraLightMushroom3D.current.position;
+    controls.current.fitToBox(meshFitCameraTelescope3D.current, true);
+    const meshPosition = meshFitCameraTelescope3D.current.position;
     controls.current.setLookAt(
       17,
       0.5,
@@ -94,14 +94,12 @@ const WelcomeScence = (props) => {
         delta * 10
       );
 
-      mushroomRef.current.traverse((child) => {
+      telescopeRef.current.traverse((child) => {
         if (child.isMesh && child.material) {
           child.material.transparent = true;
           child.material.opacity = lerp(
             child.material.opacity,
-            scrollOffset >= 2 / props.pages
-              ? 1
-              : 0,
+            scrollOffset >= 2 / props.pages ? 1 : 0,
             delta * 10
           );
         }
@@ -151,7 +149,7 @@ const WelcomeScence = (props) => {
         <meshBasicMaterial color="orange" transparent opacity={0.5} />
       </mesh>
       <mesh
-        ref={meshFitCameraLightMushroom3D}
+        ref={meshFitCameraTelescope3D}
         position={[17, 1, 1.5]}
         visible={false}
       >
@@ -206,40 +204,39 @@ const WelcomeScence = (props) => {
           />
         </Text>
       </group>
-      <group scale={20} position-x={5} position-y={0} position-z={-10}>
-        <Nature3D />
-      </group>
-      <group position-x={21} position-y={-0.8} position-z={1}>
+      <group position-x={21} position-y={-0.8} position-z={0.5}>
         <Text
           font={"/fonts/Poppins-Black.ttf"}
-          position-x={-3.5}
-          position-y={0.5}
-          position-z={1}
+          position-x={-6}
+          position-y={0}
+          position-z={-1}
           lineHeight={1.5}
           textAlign="left"
           anchorY={"bottom"}
-          scale={0.2}
+          scale={0.3}
         >
-          MY SKILLS:{"\n\n"}
-          FRONT-END:{"\n"}
-          Languages: JavaScript, TypeScript, SASS, CSS, HTML{"\n"}
-          JS Libs/Frameworks: React, NextJs{"\n"}
-          UI Libs/frameworks: Tailwindcss, Bootstrap, Material UI, ShadcnUi, Ant
-          Design, Charka UI{"\n"}
-          Third-party libraries: Redux toolkit, React Query, React Router,
-          Axios, ...{"\n\n"}
-          BACK-END:{"\n"}
-          Frameworks: ExpressJs{"\n"}
-          Database: PostgreSQL, SQL Server, MySQL, MongoDB{"\n"}
-          Others:{"\n"}
-          Tools: Firebase, Figma, xTiles, Jira, Trello, Docker, Git
+          MY CAREER GOALS:{"\n\n"}
+          SHORT-TERM:{"\n"}
+          {"\n"}
+          - IMPROVING MY SKILLS AS FRONT-END DEVELOPER{"\n"}
+          - LEARNING AND ADAPTING TO VARIOUS BACK-END TECHNOLOGIES{"\n"}AS WELL AS
+          DEV-OPS TO BECOME A FULLSTACK DEVELOPER{"\n"}{"\n"}
+          LONG-TERM:{"\n"}
+          {"\n"}
+          - IMPROVING MY SKILLS AS A FULL-STACK DEVELOPER{"\n"}
+          - KEEP UPDATING MY SKILLS TO BE MORE EFFICIENCY PROGRAMMER{"\n"}
           <meshBasicMaterial
             color={bloomColor}
             toneMapped={false}
             ref={skillsTextRef}
           />
         </Text>
-        <LightMushrooms3D ref={mushroomRef} />
+        <Telescope3D
+          scale={2}
+          ref={telescopeRef}
+          position-y={0.5}
+          position-x={1}
+        />
       </group>
       <Environment preset="sunset" />
     </>
