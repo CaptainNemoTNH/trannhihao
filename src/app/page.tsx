@@ -6,6 +6,7 @@ import { Canvas } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Suspense } from "react";
 
+
 export default function HomePage() {
   return (
     <div className="w-full h-[100vh] max-h-screen overflow-hidden">
